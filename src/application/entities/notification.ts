@@ -1,9 +1,9 @@
 import { isUUID } from 'class-validator';
+import { randomUUID } from 'crypto';
 import { Replace } from 'src/helpers/Replace';
 import { Content } from './content';
 
 interface NotificationProps {
-  id: string;
   recipientId: string;
   content: Content;
   category: string;
@@ -15,8 +15,7 @@ export class Notification {
   private props: NotificationProps;
 
   constructor(props: Replace<NotificationProps, { createdAt?: Date }>) {
-    if (!isUUID(props.id) || !isUUID(props.recipientId))
-      throw new Error('IDs should be UUID.');
+    if (!isUUID(props.recipientId)) throw new Error('IDs should be UUID.');
 
     this.props = { ...props, createdAt: props.createdAt ?? new Date() };
   }
