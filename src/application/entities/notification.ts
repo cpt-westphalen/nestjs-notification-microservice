@@ -1,6 +1,6 @@
 import { isUUID } from 'class-validator';
 import { randomUUID } from 'crypto';
-import { Replace } from 'src/helpers/Replace';
+import { Replace } from '@helpers/Replace';
 import { Content } from './content';
 
 interface NotificationProps {
@@ -9,6 +9,7 @@ interface NotificationProps {
     category: string;
     readAt?: Date | null;
     createdAt: Date;
+    cancelled?: boolean;
 }
 
 export class Notification {
@@ -57,5 +58,13 @@ export class Notification {
 
     public get createdAt() {
         return this.props.createdAt;
+    }
+
+    public get cancelled() {
+        return this.props.cancelled || false;
+    }
+
+    public set cancelled(boolean: boolean) {
+        this.props.cancelled = Boolean(boolean);
     }
 }
