@@ -14,8 +14,8 @@ export class InMemoryNotificationsRepository
     async findById(notification_id: string): Promise<Notification | null> {
         return this.notifications.find((n) => n.id === notification_id) || null;
     }
-    async cancel(notification: Notification): Promise<void> {
-        const dbNotification = (await this.findById(notification.id)) || null;
+    async cancel(notification_id: string): Promise<void> {
+        const dbNotification = (await this.findById(notification_id)) || null;
         if (dbNotification) {
             dbNotification.cancelled = true;
         }

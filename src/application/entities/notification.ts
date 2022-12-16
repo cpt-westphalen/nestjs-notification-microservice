@@ -16,10 +16,17 @@ export class Notification {
     private _id: string;
     private props: NotificationProps;
 
-    constructor(props: Replace<NotificationProps, { createdAt?: Date }>) {
+    constructor(
+        props: Replace<NotificationProps, { createdAt?: Date }>,
+        id?: string,
+    ) {
         if (!isUUID(props.recipientId)) throw new Error('IDs should be UUID.');
-        this._id = randomUUID();
-        this.props = { ...props, createdAt: props.createdAt ?? new Date() };
+        this._id = id ?? randomUUID();
+        this.props = {
+            ...props,
+            createdAt: props.createdAt ?? new Date(),
+            cancelled: props.cancelled ?? false,
+        };
     }
 
     public get id() {
