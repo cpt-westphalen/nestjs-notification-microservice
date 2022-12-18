@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { InMemoryNotificationsRepository } from '../../../test/repositories/in-memory-notifications-repository';
+import { InMemoryNotificationsRepository } from '@test/repositories/in-memory-notifications-repository';
 import { Notification } from '../entities/notification';
 import { SendNotification } from './send-notification';
 import { CancelNotification } from './cancel-notification';
@@ -16,15 +16,13 @@ let notification: Notification;
 
 describe('CancelNotification Use-Case', () => {
     beforeAll(async () => {
-        notification = await (
+        notification = (
             await sendNotification.execute(correctInputsForExecution)
         ).notification;
-        console.log(repository.notifications);
     });
 
     afterAll(() => {
         repository.notifications = [];
-        console.log('Tests ended: ', repository.notifications);
     });
 
     it('should update notification in repository with the "cancelled" flag', async () => {
