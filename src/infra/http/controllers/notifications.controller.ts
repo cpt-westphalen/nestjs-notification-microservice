@@ -5,6 +5,7 @@ import {
     NotFoundException,
     Patch,
     Post,
+    ValidationPipe,
 } from '@nestjs/common';
 import { Param } from '@nestjs/common';
 import { SendNotification } from '@application/use-cases/send-notification';
@@ -13,6 +14,8 @@ import { CancelNotification } from '@application/use-cases/cancel-notification';
 import { CancelNotificationParams } from '../dtos/cancel-notification-params';
 import { NotificationViewModel } from '../view-models/notification-view-model';
 import { CountNotifications } from '@application/use-cases/count-notifications';
+import { ReadNotification } from '@application/use-cases/read-notification';
+import { ReadManyNotificationsBody } from '../dtos/read-many-notifications-body';
 
 @Controller('notifications')
 export class NotificationsController {
@@ -20,6 +23,7 @@ export class NotificationsController {
         private sendNotification: SendNotification,
         private cancelNotification: CancelNotification,
         private countNotifications: CountNotifications,
+        private readNotification: ReadNotification,
     ) {}
 
     @Get(':id/count')
@@ -60,5 +64,25 @@ export class NotificationsController {
             console.log('Caught an error! ', error);
             throw new NotFoundException();
         }
+    }
+
+    @Patch(':notification_id/read')
+    async read(@Param('notification_id') notification_id: string) {
+        try {
+            const date = new Date();
+            await this.readNotification.execute(notification_id, date);
+            return { notification_id, readAt: date };
+        } catch (error) {
+            console.log('Caught an error! ', error);
+            throw new NotFoundException();
+        }
+    }
+
+    @Patch(':user_id/read')
+    async readMany(
+        @Param('user_id') user_id: string,
+        @Body(ValidationPipe) notification_ids: ReadManyNotificationsBody,
+    ) {
+        throw new Error('Implement method');
     }
 }

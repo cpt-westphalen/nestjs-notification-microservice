@@ -44,4 +44,21 @@ export class PrismaNotificationsRepository implements NotificationsRepository {
             where: { id: notification_id },
         });
     }
+
+    async read(notification_id: string, date: Date): Promise<void> {
+        await this.prismaService.notification.update({
+            data: { readAt: date },
+            where: { id: notification_id },
+        });
+    }
+    async readMany(notification_ids: string[], date: Date): Promise<void> {
+        await Promise.allSettled(
+            notification_ids.map((id) =>
+                this.prismaService.notification.update({
+                    where: { id },
+                    data: { readAt: date },
+                }),
+            ),
+        );
+    }
 }
