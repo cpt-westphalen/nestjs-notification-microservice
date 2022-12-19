@@ -1,21 +1,12 @@
-import { Notification } from '@application/entities/notification';
-import { NotificationsRepository } from '@application/repositories/notifications-repository';
-import { PrismaService } from '../prisma.service';
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma.service';
 import { PrismaNotificationMapper } from '../mapper/prisma-notification-mapper';
+import { NotificationsRepository } from '@application/repositories/notifications-repository';
+import { Notification } from '@application/entities/notification';
 
 @Injectable()
 export class PrismaNotificationsRepository implements NotificationsRepository {
     constructor(private prismaService: PrismaService) {}
-
-    async create(notification: Notification): Promise<void> {
-        const prismaDataNotification =
-            PrismaNotificationMapper.toPrisma(notification);
-
-        await this.prismaService.notification.create({
-            data: prismaDataNotification,
-        });
-    }
 
     async findById(notification_id: string): Promise<Notification | null> {
         const prismaNotification =
@@ -26,6 +17,25 @@ export class PrismaNotificationsRepository implements NotificationsRepository {
         const notification =
             PrismaNotificationMapper.fromPrisma(prismaNotification);
         return notification;
+    }
+
+    async findManyByRecipient(
+        recipientId: string,
+    ): Promise<Notification[] | null> {
+        const notifications = await this.prismaService.notification.findMany({
+            where: { recipientId },
+        });
+        if (!notifications) return null;
+        return notifications.map(PrismaNotificationMapper.fromPrisma);
+    }
+
+    async create(notification: Notification): Promise<void> {
+        const prismaDataNotification =
+            PrismaNotificationMapper.toPrisma(notification);
+
+        await this.prismaService.notification.create({
+            data: prismaDataNotification,
+        });
     }
 
     async cancel(notification_id: string): Promise<void> {
