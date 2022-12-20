@@ -51,4 +51,21 @@ export class InMemoryNotificationsRepository
             notification.readAt = _date;
         });
     }
+    async unread(notification_id: string): Promise<void> {
+        const notification = this.notifications.find(
+            (n) => n.id === notification_id,
+        );
+        if (!notification) throw new NotFoundException();
+        notification.readAt = null;
+    }
+
+    async unreadMany(notification_ids: string[]): Promise<void> {
+        notification_ids.forEach((notification_id) => {
+            const notification = this.notifications.find(
+                (n) => n.id === notification_id,
+            );
+            if (!notification) throw new NotFoundException();
+            notification.readAt = null;
+        });
+    }
 }
