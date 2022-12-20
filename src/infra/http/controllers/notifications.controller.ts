@@ -45,10 +45,10 @@ export class NotificationsController {
         };
     }
 
-    @Get('/:user_id')
-    async getByRecipientId(@Param('user_id') user_id: string) {
+    @Get('/:recipient_id')
+    async getByRecipientId(@Param('recipient_id') recipient_id: string) {
         const notifications = await this.getNotificationsByRecipientId.execute(
-            user_id,
+            recipient_id,
         );
         if (!notifications) throw new NotFoundException();
         return {
@@ -108,9 +108,9 @@ export class NotificationsController {
         }
     }
 
-    @Put(':user_id/read')
+    @Put(':recipient_id/read')
     async readMany(
-        @Param('user_id') user_id: string,
+        @Param('recipient_id') recipient_id: string,
         @Body(ValidationPipe) body: ReadManyNotificationsBody,
     ) {
         try {
@@ -135,9 +135,9 @@ export class NotificationsController {
         }
     }
 
-    @Put(':user_id/unread')
+    @Put(':recipient_id/unread')
     async unreadMany(
-        @Param('user_id') user_id: string,
+        @Param('recipient_id') recipient_id: string,
         @Body(ValidationPipe) body: ReadManyNotificationsBody,
     ) {
         try {
