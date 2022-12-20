@@ -1,6 +1,6 @@
-# Notifications microsservice
+# Notifications microservice
 
-My very first Nest.js, Prisma, and SQLite backend experience. It is a notifications microsservice for getting, creating, cancelling, and marking notifications as read and unread.
+My very first Nest.js, Prisma, and SQLite backend experience. It is a notifications microservice for getting, creating, cancelling, and marking notifications as read and unread.
 
 ## Stack
 
