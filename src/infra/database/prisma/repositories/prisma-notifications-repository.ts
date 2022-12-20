@@ -61,4 +61,20 @@ export class PrismaNotificationsRepository implements NotificationsRepository {
             ),
         );
     }
+    async unread(notification_id: string): Promise<void> {
+        await this.prismaService.notification.update({
+            data: { readAt: null },
+            where: { id: notification_id },
+        });
+    }
+    async unreadMany(notification_ids: string[]): Promise<void> {
+        await this.prismaService.$transaction(
+            notification_ids.map((id) =>
+                this.prismaService.notification.update({
+                    data: { readAt: null },
+                    where: { id },
+                }),
+            ),
+        );
+    }
 }
