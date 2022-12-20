@@ -2,9 +2,11 @@ import {
     Body,
     Controller,
     Get,
+    InternalServerErrorException,
     NotFoundException,
     Patch,
     Post,
+    Put,
     ValidationPipe,
 } from '@nestjs/common';
 import { Param } from '@nestjs/common';
@@ -78,11 +80,19 @@ export class NotificationsController {
         }
     }
 
-    @Patch(':user_id/read')
+    @Put(':user_id/read')
     async readMany(
         @Param('user_id') user_id: string,
-        @Body(ValidationPipe) notification_ids: ReadManyNotificationsBody,
+        @Body(ValidationPipe) body: ReadManyNotificationsBody,
     ) {
-        throw new Error('Implement method');
+        try {
+            const { notification_ids } = body;
+            const date = new Date();
+            await this.readNotification.execute(notification_ids, date);
+            return { notification_ids, readAt: date };
+        } catch (error) {
+            console.log('Caught! ', error);
+            throw new InternalServerErrorException();
+        }
     }
 }

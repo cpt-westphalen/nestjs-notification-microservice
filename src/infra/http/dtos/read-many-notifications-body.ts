@@ -1,4 +1,4 @@
-import { ArrayContains, IsArray, IsNotEmpty, IsUUID } from 'class-validator';
+import { IsUUID } from 'class-validator';
 
 export class ReadManyNotificationsBody {
     @IsUUID('all', { each: true })
