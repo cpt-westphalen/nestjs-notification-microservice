@@ -5,6 +5,7 @@ import { DatabaseModule } from '../database/database.module';
 import { CancelNotification } from '@application/use-cases/cancel-notification';
 import { CountNotifications } from '@application/use-cases/count-notifications';
 import { ReadNotification } from '@application/use-cases/read-notification';
+import { UnreadNotification } from '@application/use-cases/unread-notification';
 
 @Module({
     imports: [DatabaseModule],
@@ -13,6 +14,7 @@ import { ReadNotification } from '@application/use-cases/read-notification';
         CancelNotification,
         CountNotifications,
         ReadNotification,
+        UnreadNotification,
     ],
     controllers: [NotificationsController],
 })

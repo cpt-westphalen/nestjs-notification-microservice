@@ -18,6 +18,7 @@ import { NotificationViewModel } from '../view-models/notification-view-model';
 import { CountNotifications } from '@application/use-cases/count-notifications';
 import { ReadNotification } from '@application/use-cases/read-notification';
 import { ReadManyNotificationsBody } from '../dtos/read-many-notifications-body';
+import { UnreadNotification } from '@application/use-cases/unread-notification';
 
 @Controller('notifications')
 export class NotificationsController {
@@ -26,6 +27,7 @@ export class NotificationsController {
         private cancelNotification: CancelNotification,
         private countNotifications: CountNotifications,
         private readNotification: ReadNotification,
+        private unreadNotification: UnreadNotification,
     ) {}
 
     @Get(':id/count')
@@ -90,6 +92,32 @@ export class NotificationsController {
             const date = new Date();
             await this.readNotification.execute(notification_ids, date);
             return { notification_ids, readAt: date };
+        } catch (error) {
+            console.log('Caught! ', error);
+            throw new InternalServerErrorException();
+        }
+    }
+
+    @Patch(':notification_id/unread')
+    async unread(@Param('notification_id') notification_id: string) {
+        try {
+            await this.unreadNotification.execute(notification_id);
+            return { notification_id, readAt: null };
+        } catch (error) {
+            console.log('Caught an error! ', error);
+            throw new NotFoundException();
+        }
+    }
+
+    @Put(':user_id/unread')
+    async unreadMany(
+        @Param('user_id') user_id: string,
+        @Body(ValidationPipe) body: ReadManyNotificationsBody,
+    ) {
+        try {
+            const { notification_ids } = body;
+            await this.unreadNotification.execute(notification_ids);
+            return { notification_ids, readAt: null };
         } catch (error) {
             console.log('Caught! ', error);
             throw new InternalServerErrorException();
