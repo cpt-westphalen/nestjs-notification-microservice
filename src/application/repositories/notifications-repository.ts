@@ -9,4 +9,6 @@ export abstract class NotificationsRepository {
     abstract cancel(notification_id: string): Promise<void>;
     abstract read(notification_id: string, date: Date): Promise<void>;
     abstract readMany(notification_ids: string[], date: Date): Promise<void>;
+    abstract unread(notification_id: string): Promise<void>;
+    abstract unreadMany(notification_ids: string[]): Promise<void>;
 }
