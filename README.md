@@ -10,7 +10,7 @@ My very first Nest.js, Prisma, and SQLite backend experience. It is a notificati
 
 -   Concept, folder structures and configs are from Rocketseat's Ignite Lab (Dec. 2022);
 -   'Send Notification' use-case is Rocketseat's code;
--   Cancel, count, read and unread use-cases codes are my own;
+-   Get all, Get By Recipient, Cancel, Count, Read and Unread use-cases codes are my own;
 -   It is unit-tested with an in-memory repository;
 -   It follows SOLID principles.
 
