@@ -27,7 +27,7 @@ My very first Nest.js, Prisma, and SQLite backend experience. It is a notificati
 
 ### GET /notifications
 
-Get all notifications in the database in JSON format.
+Get all notifications in JSON format.
 Response body structure:
 
 ```
@@ -36,6 +36,27 @@ Response body structure:
         {
             "id": "string", // UUID
             "recipientId": "string", // UUID
+            "content": "string", // 5 to 140 char
+            "category": "string",
+            "readAt": "Date | null",
+            "createdAt": "Date",
+            "cancelled": "boolean",
+        }
+    ]
+}
+```
+
+### GET /notifications/:recipient_id
+
+Get all notifications for a specific recipient in JSON format.
+Response body structure:
+
+```
+{
+    "notifications": [
+        {
+            "id": "string", // UUID
+            "recipientId": "string", // UUID, same as :recipient_id from request
             "content": "string", // 5 to 140 char
             "category": "string",
             "readAt": "Date | null",
@@ -62,9 +83,9 @@ Request Body structure:
 -   Content must be 5 to 140 characters long
 -   Category must include a text
 
-### GET notifications/:user_id/count
+### GET notifications/:recipient_id/count
 
-Get notifications count for a specific user.
+Get notifications count for a specific recipient.
 
 ```
 {
@@ -80,7 +101,7 @@ Request updates notification's "cancelled" property to true.
 
 Request updates notification's readAt property to server's request processing date (aka: new Date() on the server side)
 
-### PUT notifications/:user_id/read
+### PUT notifications/:recipient_id/read
 
 Request updates many notifications with a single "readAt" date, defined on the request processing at server side. Request body must provide array of notification ids.
 
@@ -101,7 +122,7 @@ Important: If any notification update fails, every change will be uncommited fro
 
 Request updates notification's readAt property to `null`.
 
-### PUT notifications/:user_id/unread
+### PUT notifications/:recipient_id/unread
 
 Request updates many notifications with "readAt" as `null`. Request body must provide array of notification ids.
 
