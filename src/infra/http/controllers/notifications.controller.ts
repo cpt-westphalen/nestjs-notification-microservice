@@ -19,16 +19,29 @@ import { CountNotifications } from '@application/use-cases/count-notifications';
 import { ReadNotification } from '@application/use-cases/read-notification';
 import { ReadManyNotificationsBody } from '../dtos/read-many-notifications-body';
 import { UnreadNotification } from '@application/use-cases/unread-notification';
+import { GetNotifications } from '@application/use-cases/get-notifications';
 
 @Controller('notifications')
 export class NotificationsController {
     constructor(
+        private getNotifications: GetNotifications,
         private sendNotification: SendNotification,
         private cancelNotification: CancelNotification,
         private countNotifications: CountNotifications,
         private readNotification: ReadNotification,
         private unreadNotification: UnreadNotification,
     ) {}
+
+    @Get()
+    async getAll() {
+        const notifications = await this.getNotifications.execute();
+        const httpNotifications = notifications.map((n) =>
+            NotificationViewModel.toHTTP(n),
+        );
+        return {
+            notifications: httpNotifications,
+        };
+    }
 
     @Get(':id/count')
     async count(@Param('id') id: string) {

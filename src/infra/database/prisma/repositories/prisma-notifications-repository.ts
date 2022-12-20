@@ -8,6 +8,15 @@ import { Notification } from '@application/entities/notification';
 export class PrismaNotificationsRepository implements NotificationsRepository {
     constructor(private prismaService: PrismaService) {}
 
+    async getAll(): Promise<Notification[]> {
+        const rawNotifications =
+            await this.prismaService.notification.findMany();
+        const notifications = rawNotifications.map((n) =>
+            PrismaNotificationMapper.fromPrisma(n),
+        );
+        return notifications;
+    }
+
     async findById(notification_id: string): Promise<Notification | null> {
         const prismaNotification =
             await this.prismaService.notification.findUnique({
