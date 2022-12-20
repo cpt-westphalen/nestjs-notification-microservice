@@ -10,6 +10,10 @@ export class InMemoryNotificationsRepository
         this.notifications = [];
     }
 
+    async getAll(): Promise<Notification[]> {
+        return this.notifications;
+    }
+
     async findById(notification_id: string): Promise<Notification | null> {
         return this.notifications.find((n) => n.id === notification_id) || null;
     }
