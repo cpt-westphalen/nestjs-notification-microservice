@@ -20,10 +20,12 @@ import { ReadNotification } from '@application/use-cases/read-notification';
 import { ReadManyNotificationsBody } from '../dtos/read-many-notifications-body';
 import { UnreadNotification } from '@application/use-cases/unread-notification';
 import { GetNotifications } from '@application/use-cases/get-notifications';
+import { GetNotificationsByRecipientId } from '@application/use-cases/get-notifications-by-recipient-id';
 
 @Controller('notifications')
 export class NotificationsController {
     constructor(
+        private getNotificationsByRecipientId: GetNotificationsByRecipientId,
         private getNotifications: GetNotifications,
         private sendNotification: SendNotification,
         private cancelNotification: CancelNotification,
@@ -40,6 +42,17 @@ export class NotificationsController {
         );
         return {
             notifications: httpNotifications,
+        };
+    }
+
+    @Get('/:user_id')
+    async getByRecipientId(@Param('user_id') user_id: string) {
+        const notifications = await this.getNotificationsByRecipientId.execute(
+            user_id,
+        );
+        if (!notifications) throw new NotFoundException();
+        return {
+            notifications: notifications.map(NotificationViewModel.toHTTP),
         };
     }
 

@@ -7,10 +7,12 @@ import { CountNotifications } from '@application/use-cases/count-notifications';
 import { ReadNotification } from '@application/use-cases/read-notification';
 import { UnreadNotification } from '@application/use-cases/unread-notification';
 import { GetNotifications } from '@application/use-cases/get-notifications';
+import { GetNotificationsByRecipientId } from '@application/use-cases/get-notifications-by-recipient-id';
 
 @Module({
     imports: [DatabaseModule],
     providers: [
+        GetNotificationsByRecipientId,
         GetNotifications,
         SendNotification,
         CancelNotification,

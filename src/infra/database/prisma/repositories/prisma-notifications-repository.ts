@@ -11,8 +11,8 @@ export class PrismaNotificationsRepository implements NotificationsRepository {
     async getAll(): Promise<Notification[]> {
         const rawNotifications =
             await this.prismaService.notification.findMany();
-        const notifications = rawNotifications.map((n) =>
-            PrismaNotificationMapper.fromPrisma(n),
+        const notifications = rawNotifications.map(
+            PrismaNotificationMapper.fromPrisma,
         );
         return notifications;
     }
